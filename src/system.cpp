@@ -19,13 +19,28 @@ Processor& System::Cpu() { return cpu_; }
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() 
 {
-    vector<int> ProcessesIds = LinuxParser::Pids();
-    for(auto processesid : ProcessesIds) 
+    vector<int> ProcessesIds{LinuxParser::Pids()};
+
+    // create a set
+    set<int> existPids;
+    for(Process & process : processes_)
     {
-        processes_.push_back(Process{processesid});
+        existPids.insert(process.Pid());
     }
 
-    std::sort(processes_.begin(), processes_.end());
+    for(int pid: ProcessesIds)
+    {
+        if (existPids.find(pid) == existPids.end())
+        processes_.emplace_back(pid);
+    }
+
+    // Update CPU RAM
+    for(auto& process : processes_)
+    {
+        process.Ram();
+    }
+
+    std::sort(processes_.begin(), processes_.end(), std::greater<Process>());
 
     return processes_;
 }

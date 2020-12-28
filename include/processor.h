@@ -24,12 +24,6 @@ enum CPUStates
     S_GUEST_NICE 
 };
 
-// typedef struct CPUData
-// {
-    // std::string cpu;
-    // size_t times[NUM_CPU_STATES];
-// }; 
-
 class Processor {
  public:
   float Utilization();  // TODO: See src/processor.cpp

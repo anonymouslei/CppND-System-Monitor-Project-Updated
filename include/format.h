@@ -8,6 +8,6 @@ using std::string;
 namespace Format {
 std::string ElapsedTime(long times);  // TODO: See src/format.cpp
 std::string Padding(string s, char c);
-};                                    // namespace Format
+};  // namespace Format
 
 #endif

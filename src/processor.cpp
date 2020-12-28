@@ -12,7 +12,7 @@ float Processor::Utilization() // reference: a C++ program to get CPU usage from
     ReadStatesCPU(preTimes);
 
     // 100ms pause
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(90));
 
     // snapshot 2
     ReadStatesCPU(currTimes);
@@ -38,12 +38,11 @@ void Processor::ReadStatesCPU(size_t *times)
 
 float Processor::getUtilization(size_t *entries1, size_t *entries2)
 {
-    const float activeTime = static_cast<float>(GetActiveTime(entries1) - GetActiveTime(entries2));
-    const float idleTime = static_cast<float>(GetIdleTime(entries1) - GetIdleTime(entries2));
+    const float activeTime = static_cast<float>(GetActiveTime(entries2) - GetActiveTime(entries1));
+    const float idleTime = static_cast<float>(GetIdleTime(entries2) - GetIdleTime(entries1));
     const float totalTime = activeTime + idleTime; 
 
     return activeTime / totalTime;
-    // return static_cast<float>(GetIdleTime(entries1));
 }
 
 size_t Processor::GetActiveTime(const size_t *times)

@@ -25,13 +25,12 @@ enum CPUStates {
 
 class Processor {
  public:
-  float Utilization();  // TODO: See src/processor.cpp
+  float Utilization();
   void ReadStatesCPU(size_t *times);
   float getUtilization(size_t *entries1, size_t *entries2);
   size_t GetActiveTime(const size_t *times);
   size_t GetIdleTime(const size_t *times);
 
-  // TODO: Declare any necessary private members
  private:
 };
 

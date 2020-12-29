@@ -1,6 +1,6 @@
 #include "processor.h"
 
-// TODO: Return the aggregate CPU utilization
+// Return the aggregate CPU utilization
 float Processor::Utilization()  // reference: a C++ program to get CPU usage
                                 // from command line in Linux
 {

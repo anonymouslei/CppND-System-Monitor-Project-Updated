@@ -17,7 +17,7 @@ int Process::Pid() { return pId_; }
 float Process::CpuUtilization() {
   string utime, stime, cutime, cstime, starttime;
   string line, s_pid, tmp;
-  long f_utime, f_stime, f_cutime, f_cstime;
+  long f_utime, f_stime, f_cutime, f_cstime, f_starttime;
   float utilization;
   s_pid = to_string(pId_);
   std::ifstream filestream(LinuxParser::kProcDirectory + string{"/"} + s_pid +
@@ -39,9 +39,9 @@ float Process::CpuUtilization() {
   f_stime = std::stol(stime, nullptr, 10);
   f_cutime = std::stol(cutime, nullptr, 10);
   f_cstime = std::stol(cstime, nullptr, 10);
-  startTime_ = std::stol(starttime, nullptr, 10);
+  f_starttime = std::stol(starttime, nullptr, 10);
 
-  utilization = calCPUUsage(f_utime, f_stime, f_cutime, f_cstime, startTime_);
+  utilization = calCPUUsage(f_utime, f_stime, f_cutime, f_cstime, f_starttime);
 
   return utilization;
 }
@@ -86,7 +86,27 @@ string Process::User() {
 }
 
 // TODO: Return the age of this process (in seconds)
-long int Process::UpTime() { return startTime_ / sysconf(_SC_CLK_TCK); }
+long int Process::UpTime()
+{
+  string starttime;
+  string line, s_pid, tmp;
+  long f_starttime;
+  s_pid = to_string(pId_);
+  std::ifstream filestream(LinuxParser::kProcDirectory + string{"/"} + s_pid +
+                           LinuxParser::kStatFilename);
+
+  if (filestream.is_open()) {
+    std::getline(filestream, line);
+    std::istringstream linestream(line);
+    for (auto i = 1; i < 14; i++) {
+      linestream >> tmp;
+    }
+    linestream >> starttime;
+  }
+  f_starttime = std::stol(starttime, nullptr, 10);
+
+  return f_starttime / sysconf(_SC_CLK_TCK);
+}
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function

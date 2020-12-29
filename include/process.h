@@ -25,7 +25,6 @@ class Process {
                     long starttime);
 
   int pId_;
-  long startTime_;
   float cpuRam_;
 };
 
